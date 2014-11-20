@@ -1,0 +1,12 @@
+{
+	// Copy any modified settings to `User/Spartan.sublime-settings`
+	// otherwise modifications will not survive updates.
+
+	// JSON file location
+	// default - C:\Users\%Username\.spartan
+	// you can define custom for testing
+	// "json_location": "C:/Users/Stefan/AppData/Roaming/Sublime Text 2/Packages/Spartan/test-json/",
+
+	// Enable Debug 
+	// "debug": true
+}
