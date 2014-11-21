@@ -25,6 +25,6 @@ class SpartanTextAutoComplete(sublime_plugin.EventListener):
 			return []
 		
 		# get all text snippets
-		snippets = text_snippets.load()
+		snippets = text_snippets.load(view)
 
 		return (snippets, sublime.INHIBIT_EXPLICIT_COMPLETIONS)

@@ -1,5 +1,6 @@
 import os
 import re
+import json
 
 # custom libs
 from spartan.utils import cache
@@ -30,8 +31,45 @@ def get_snippets(json_data):
 	return snippets
 
 
+def get_emmet_snippets(json_data):
+	snippets = {}
+
+	# add as t1 => snippet
+	i = 1
+	for snippet in json_data:
+		trigger = "t" + str(i)
+		
+		snippets[trigger] = snippet
+
+		i += 1
+
+	return snippets
+
+
+def export_to_emmet(json_data):
+	emmet_snippets = get_emmet_snippets(json_data)
+
+	json_raw_data = {
+		"html": {
+			"snippets": {}
+		},
+
+		"spartantextsnippets": {}
+	}
+
+	json_raw_data['html']['snippets'] = emmet_snippets;
+	json_raw_data['spartantextsnippets'] = emmet_snippets;
+
+	# save the file
+	file_path = settings.get('emmet_snippets_file_path')
+
+	with open(file_path, 'w') as outfile:
+  		json.dump(json_raw_data, outfile)
+
+
+
 # get the text snippets from the json or from the cache
-def load():
+def load(view):
 
 	# get the json file
 	json_file = settings.get("text_snippets_file_path")
@@ -60,6 +98,12 @@ def load():
 
 	# cache the snippets
 	cache.add("text_snippets", text_snippets, current_modify_time)
+
+	# export to emmet
+	export_to_emmet(json_data)
+
+	# reload emmet
+	view.run_command("emmet_reset_context")
 	
 	log("loaded from json")
 
